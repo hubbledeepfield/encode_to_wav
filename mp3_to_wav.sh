@@ -33,9 +33,9 @@ done
 rm tracklist.txt
 
 ls >> tracks_to_encode.txt
-cat tracks_to_encode.txt | while read i; do
+cat tracks_to_encode.txt | while read i; do \
     track=$( echo $i | awk -F".mp3" '{print $1}' )
-   # $ffmpeg -i $track.mp3 $track.wav
+    $ffmpeg -i $track.mp3 $track.wav
     echo $track
 done;
 
