@@ -1,9 +1,10 @@
 #!/bin/bash
 
-[ $# -eq 2 ] || { echo "Usage: $0 <inputdir>, <dest_format>"; exit 1; }
+[ $# -eq 3 ] || { echo "Usage: $0 <inputdir>, <orig_format>, <dest_format>"; exit 1; }
 
 INPUT_DIR="$1"
-dest_format="$2"
+orig_format="$2"
+dest_format="$3"
 DIR_NAME=$(basename "${INPUT_DIR}")
 OUTPUT_STORAGE=/Volumes/WD1T/tests/
 
@@ -23,7 +24,6 @@ OUTPUT_STORAGE=/Volumes/WD1T/tests/
 ffmpeg=/usr/local/bin/ffmpeg
 acodec=pcm_s16le
 
-
 cp -r ${INPUT_DIR} ${OUTPUT_STORAGE}
 
 cd ${OUTPUT_STORAGE}/${DIR_NAME}
@@ -34,10 +34,10 @@ cat tracklist.txt | while read i; do
 done
 
 if [ $dest_format == "mp3" ]; then
-    for track in $INPUT_DIR
+    for track in $INPUT_DIR/*
     do
         echo $track
-        #$ffmpeg -y -i $track -codec:a libmp3lame -qscale:a 0 $track.mp3
+        $ffmpeg -y -i $track -codec:a libmp3lame -qscale:a 0 $track.mp3
     done
 fi
 
