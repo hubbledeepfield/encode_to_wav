@@ -28,24 +28,27 @@ cp -r ${INPUT_DIR} ${OUTPUT_STORAGE}
 
 cd ${OUTPUT_STORAGE}/${DIR_NAME}
 
-ls  > tracklist.txt
-cat tracklist.txt | while read i; do
-    mv "$i" "${i//[[:space:]]}"
-done
+#ls  > tracklist.txt
+#cat tracklist.txt | while read i; do
+#    mv "$i" "${i//[[:space:]]}"
+#done
 
-if [ $dest_format == "mp3" ]; then
-    for track in $INPUT_DIR/*
-    do
-        echo $track
+for track in $INPUT_DIR/*
+    if [ $dest_format == "mp3" ]; then
+        do
         $ffmpeg -y -i $track -codec:a libmp3lame -qscale:a 0 $track.mp3
-    done
-fi
+        done
+    elif [ $dest_format == "wav" ]; then
+        do
+        $ffmpeg -y -i $title.mp3 -acodec $acodec $title.wav
+        done
+    fi
 
-ls | grep "mp3" > tracks_to_encode.txt
-cat tracks_to_encode.txt | while read i; do
-    title=$( echo $i | awk -F".mp3" '{print $1}' )
-    $ffmpeg -y -i $title.mp3 -acodec $acodec $title.wav
-    echo $title
-    rm $title.mp3
-done;
+#ls | grep "mp3" > tracks_to_encode.txt
+#cat tracks_to_encode.txt | while read i; do
+#    title=$( echo $i | awk -F".mp3" '{print $1}' )
+#    $ffmpeg -y -i $title.mp3 -acodec $acodec $title.wav
+#    echo $title
+#    rm $title.mp3
+#done;
 
